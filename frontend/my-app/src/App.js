@@ -1,12 +1,13 @@
 import './App.css';
-import {useCallback, useEffect} from "react";
+import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Dropzone, {useDropzone} from "react-dropzone";
 import {ProgressBar} from "react-bootstrap";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-    var qs = require('qs');
+    const [completed, setCompleted] = useState(20);
+    const [inProgress, setInProgress] = useState(false);
 
     const defaultStyle = {
         display: "inline-block",
@@ -15,12 +16,15 @@ function App() {
         border: "1px solid black",
         background: "white",
     }
+
     useEffect(() => {
         axios.get("http://localhost:8080/api/test")
             .then(res => console.log(res.data))
             .catch(res => console.log(res.data))
     }, []);
+
     const onDrop = useCallback(acceptedFiles => {
+        setInProgress(true);
         console.log(acceptedFiles);
         acceptedFiles.forEach(async (file) => {
             console.log(file.text());
@@ -107,7 +111,8 @@ function App() {
                     </section>
                 )}
             </Dropzone>
-            <ProgressBar></ProgressBar>
+            {inProgress && <ProgressBar animated={true} bgcolor={"#6a1b9a"} now={completed} label={`${completed}%`}  />}
+
 
 
             {/*<header className="App-header">
