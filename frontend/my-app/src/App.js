@@ -6,7 +6,7 @@ import {ProgressBar} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-    const [completed, setCompleted] = useState(20);
+    const [completed, setCompleted] = useState(0);
     const [inProgress, setInProgress] = useState(false);
 
     const defaultStyle = {
@@ -16,12 +16,6 @@ function App() {
         border: "1px solid black",
         background: "white",
     }
-
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/test")
-            .then(res => console.log(res.data))
-            .catch(res => console.log(res.data))
-    }, []);
 
     const onDrop = useCallback(acceptedFiles => {
         setInProgress(true);
@@ -36,29 +30,43 @@ function App() {
             reader.readAsText(file);
             // reader.onabort = () => console.log('file reading was aborted');
             // reader.onerror = () => console.log('file reading has failed');
-            reader.onload = () => {
+            reader.onload = async () => {
                 // Do whatever you want with the file contents
                 // const binaryStr = reader.result;
                 // console.log(binaryStr);
                 // const text = e.target.result;
                 const data = csvToArr(text);
                 console.log(data.length);
-                console.log("data: ",data);
+                console.log("data: ", data);
                 console.log(JSON.stringify(data));
 
                 let formData = new FormData();
-                formData.append('userList',JSON.stringify(data));
+                formData.append('userList', JSON.stringify(data));
                 console.log("formData: ", formData);
 
-                axios.post(`http://localhost:8080/api/insert`, {
-                        userList: data
+                const cntPerInsert = data.length / 2;
+                const percentage = parseInt(100 * cntPerInsert / data.length);
+                // setCompleted(100 * cntPerInsert / data.length);
+                // let totalInsertCnt = 0;
+                let tempArr = [];
+                try {
+                    for (let i = 0; i < data.length; i++) {
+                        tempArr.push(data[i]);
+                        if ((i + 1) % cntPerInsert == 0) {
+                            const res = await axios.post(`http://localhost:8080/api/insert`, {userList: tempArr});
+                            console.log("Success!");
+                            setCompleted(prevValue => prevValue + percentage);
+                            tempArr = [];
+                        }
                     }
-                    // paramsSerializer: params => {
-                    //     return qs.stringify(params);
-                    // }
-                )
-                    .then(res => console.log("success!!"))
-                    .catch(res => console.log(res.data))
+                    if (tempArr.length > 0) {
+                        const res = await axios.post(`http://localhost:8080/api/insert`, {userList: tempArr});
+                        setCompleted(100);
+                        console.log("Success!");
+                    }
+                } catch (e) {
+                    console.log("error: ", e);
+                }
             }
             // reader.readAsArrayBuffer(file);
         })
@@ -111,8 +119,7 @@ function App() {
                     </section>
                 )}
             </Dropzone>
-            {inProgress && <ProgressBar animated={true} bgcolor={"#6a1b9a"} now={completed} label={`${completed}%`}  />}
-
+            {inProgress && <ProgressBar animated={true} bgcolor={"#6a1b9a"} now={completed} label={`${completed}%`}/>}
 
 
             {/*<header className="App-header">

@@ -19,11 +19,12 @@ import java.util.List;
 public class JdbcRepositoryImpl implements JdbcRepository {
     private final JdbcTemplate jdbcTemplate;
 
-//    @Value("${batchSize}")
-    private final int batchSize = 1000;
+    @Value("${batchSize}")
+    private int batchSize;
 
     @Override
     public void saveAll(List<UserEntity> items) {
+        System.out.println("batchSize: " + batchSize);
         int batchCount = 0;
         List<UserEntity> subItems = new ArrayList<>();
         for (int i = 0; i < items.size(); i++) {
