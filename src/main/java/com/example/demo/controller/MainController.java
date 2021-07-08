@@ -4,6 +4,8 @@ import com.example.demo.dto.Dto;
 import com.example.demo.dto.UserDto;
 import com.example.demo.service.BatchService;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MainController {
 
-    private final BatchService batchService;
+    private BatchService batchService;
 
     @GetMapping("/api/test")
     public String test() {

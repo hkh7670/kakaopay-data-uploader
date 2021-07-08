@@ -2,11 +2,13 @@ package com.example.demo.dto;
 
 
 import com.example.demo.entity.UserEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class UserDto {
     private Long id;
     private String firstname;

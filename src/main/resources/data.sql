@@ -7,4 +7,4 @@ CREATE TABLE USER_INFO
     EMAIL VARCHAR(100)
 );
 
-INSERT INTO USER_INFO VALUES (1, 'GyuHo', 'Han', 'hkh7670@gmail.com');
+-- INSERT INTO USER_INFO VALUES (1, 'GyuHo', 'Han', 'hkh7670@gmail.com');

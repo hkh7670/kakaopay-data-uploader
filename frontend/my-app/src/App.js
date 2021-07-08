@@ -9,13 +9,11 @@ function App() {
     const [completed, setCompleted] = useState(0);
     const [inProgress, setInProgress] = useState(false);
 
-    const defaultStyle = {
-        display: "inline-block",
-        width: "500px",
-        height: "150px",
-        border: "1px solid black",
-        background: "white",
-    }
+    /*useEffect(() => {
+        if(completed === 100) {
+            alert("Upload Completed!");
+        }
+    }, [completed])*/
 
     const onDrop = useCallback(acceptedFiles => {
         setInProgress(true);
@@ -103,40 +101,25 @@ function App() {
         // return the array
         return arr;
     }
-
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
 
     return (
         <div className="App">
-            <h1>TEST~!!</h1>
+            <h1>Data Uploader</h1>
             <Dropzone onDrop={acceptedFiles => onDrop(acceptedFiles)} disabled={false}>
                 {({getRootProps, getInputProps}) => (
                     <section>
                         <div {...getRootProps()}>
                             <input {...getInputProps()} />
-                            <div style={defaultStyle}>Drag 'n' drop some files here, or click to select files</div>
+                            <div className={"defaultStyle"}>Drag and drop some files here, or click to select files</div>
                         </div>
                     </section>
                 )}
             </Dropzone>
-            {inProgress && <ProgressBar animated={true} bgcolor={"#6a1b9a"} now={completed} label={`${completed}%`}/>}
-
-
-            {/*<header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </header>*/}
-
+            <div className={"margin_top"}>
+                {inProgress &&
+                <ProgressBar animated={true} bgcolor={"#6a1b9a"} now={completed} label={`${completed}%`}/>}
+            </div>
         </div>
     );
 }
