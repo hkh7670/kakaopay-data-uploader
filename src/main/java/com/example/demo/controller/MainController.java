@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MainController {
 
-    private BatchService batchService;
+    private final BatchService batchService;
 
     @GetMapping("/api/test")
     public String test() {

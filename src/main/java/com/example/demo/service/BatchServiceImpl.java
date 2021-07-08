@@ -6,6 +6,7 @@ import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.JdbcRepository;
 import com.example.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
