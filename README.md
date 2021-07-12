@@ -9,6 +9,7 @@
 ### 구현방법 및 결과
 1. 대량 Insert 시 성능이슈를 극복하기 위해 jdbcTemplate을 이용하여 BatchInsert를 구현하였습니다.
 2. batchSize를 50000 으로 설정하였습니다.
+3. JPA의 saveAll을 이용하는 방법에 비해 눈에띄는 성능향상이 있었습니다. (10초 이상 -> 2~3초)
 
 ### 실행방법
 1. frontend/my-app 경로에서 yarn 명령을 실행하여 package.json의 의존성 모듈을 설치해줍니다.
