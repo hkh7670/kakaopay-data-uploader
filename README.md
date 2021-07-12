@@ -6,8 +6,9 @@
 3. Gradle
 4. H2 (MySQL Mode)
 
-### 구현방법
-대량 Insert 시 성능이슈를 극복하기 위해 BatchInsert를 이용하여 구현하였습니다.
+### 구현방법 및 결과
+1. 대량 Insert 시 성능이슈를 극복하기 위해 jdbcTemplate을 이용하여 BatchInsert를 구현하였습니다.
+2. batchSize를 50000 으로 설정하였습니다.
 
 ### 실행방법
 1. Gradle Build를 합니다. (이때 yarn build도 같이 진행됨)
