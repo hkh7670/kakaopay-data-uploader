@@ -11,10 +11,11 @@
 2. batchSize를 50000 으로 설정하였습니다.
 
 ### 실행방법
-1. Gradle Build를 합니다. (이때 yarn build도 같이 진행됨)
-2. 빌드 후 DemoApplication.java를 실행합니다.
-3. localhost:8080 으로 접속합니다.
-4. h2 console은 다음 주소로 접속 가능합니다.
+1. frontend/my-app 경로에서 yarn 명령을 실행하여 package.json의 의존성 모듈을 설치해줍니다.
+2. Gradle Build를 합니다. (이때 yarn build도 같이 진행됨)
+3. 빌드 후 DemoApplication.java를 실행합니다.
+4. localhost:8080 으로 접속합니다.
+5. h2 console은 다음 주소로 접속 가능합니다.
 
     (접속주소 : localhost:8080/h2-console 
    
