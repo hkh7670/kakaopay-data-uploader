@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Profile("jdbc")
 @Repository
 @RequiredArgsConstructor
 public class JdbcRepositoryImpl implements JdbcRepository {
@@ -30,16 +29,17 @@ public class JdbcRepositoryImpl implements JdbcRepository {
         for (int i = 0; i < items.size(); i++) {
             subItems.add(items.get(i));
             if ((i + 1) % batchSize == 0) {
-                batchCount = batchInsert(batchSize, batchCount, subItems);
+                batchCount = batchInsert(batchCount, subItems);
             }
         }
         if (!subItems.isEmpty()) {
-            batchCount = batchInsert(batchSize, batchCount, subItems);
+            batchCount = batchInsert(batchCount, subItems);
         }
         System.out.println("batchCount: " + batchCount);
     }
 
-    private int batchInsert(int batchSize, int batchCount, List<UserEntity> subItems) {
+    private int batchInsert(int batchCount, List<UserEntity> subItems) {
+        // jdbcTemplate의 batchUpdate 함수를 이용하여 insert할 데이터들을 batchSize로 묶어서 한번에 insert
         jdbcTemplate.batchUpdate("INSERT INTO USER_INFO (`ID`, `FIRSTNAME`, `LASTNAME`, `EMAIL`) VALUES (?, ?, ?, ?)",
                 new BatchPreparedStatementSetter() {
                     @Override

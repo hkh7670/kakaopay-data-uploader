@@ -6,14 +6,15 @@ import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.JdbcRepository;
 import com.example.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class BatchServiceImpl implements BatchService{
 
     private final UserRepository userRepository;
@@ -21,32 +22,14 @@ public class BatchServiceImpl implements BatchService{
 
 
     @Override
-    public void insertBatch(Dto request) {
+    public int insertBatch(Dto request) {
         List<UserEntity> entities = request.getUserList()
                                 .stream()
                                 .map(UserDto::toEntity)
                                 .collect(Collectors.toList());
 //        userRepository.saveAll(entities);
         jdbcRepository.saveAll(entities);
-
-
-
-
-//        jdbcTemplate.batchUpdate("INSERT INTO USER_INFO (`ID`, `FIRSTNAME`, `LASTNAME`, `EMAIL`) VALUES (?, ?, ?, ?)",
-//                new BatchPreparedStatementSetter() {
-//                    @Override
-//                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-//                        ps.setLong(1, entities.get(i).getId());
-//                        ps.setString(2, entities.get(i).getFirstname());
-//                        ps.setString(3, entities.get(i).getLastname());
-//                        ps.setString(4, entities.get(i).getEmail());
-//                    }
-//
-//                    @Override
-//                    public int getBatchSize() {
-//                        return 0;
-//                    }
-//                });
+        return entities.size();
     }
 
 
