@@ -19,23 +19,23 @@ function App() {
             // reader.onerror = () => console.log('file reading has failed');
             reader.onload = async (e) => {
                 console.log("e: ", e);
-                const data = csvToArr(e.target.result);
+                const data = csvToArr(e.target.result); // csv데이터를 DTO의 형태에 맞게 변경
                 const cntPerInsert = data.length / 2; // 한번 API 호출 당 전송할 데이터 갯수
-                const percentage = parseInt(100 * cntPerInsert / data.length);
+                const percentage = parseInt(100 * cntPerInsert / data.length); // Insert API 한번 쏠 때 마다 올라갈 퍼센트
                 let tempArr = [];
                 try {
                     for (let i = 0; i < data.length; i++) {
                         tempArr.push(data[i]);
-                        if ((i + 1) % cntPerInsert == 0) {
+                        if ((i + 1) % cntPerInsert == 0) { // 전송할 데이터수에 도달하면 post api 전송
                             const res = await axios.post(`http://localhost:8080/api/insert`, {userList: tempArr});
                             console.log("Success!");
-                            setCompleted(prevValue => prevValue + percentage);
+                            setCompleted(prevValue => prevValue + percentage); // 전송한 데이터량에 맞게 퍼센트 변경
                             tempArr = [];
                         }
                     }
-                    if (tempArr.length > 0) {
+                    if (tempArr.length > 0) { // 위 반복문에서 데이터를 전송한 후 아직 전송할 데이터가 남아있는 경우?
                         const res = await axios.post(`http://localhost:8080/api/insert`, {userList: tempArr});
-                        setCompleted(100);
+                        setCompleted(100); // 마지막 전송이므로 100%
                         console.log("Success!");
                     }
                 } catch (e) {
